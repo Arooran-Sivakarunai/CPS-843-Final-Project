@@ -6,10 +6,6 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 import torchvision.transforms as transforms
 
-
-# =============================
-#  Dataset for Pokémon sprites
-# =============================
 class SpriteDataset(Dataset):
     def __init__(self, folder):
         self.paths = []
@@ -29,10 +25,6 @@ class SpriteDataset(Dataset):
         img = Image.open(self.paths[idx]).convert("RGB")
         return self.transform(img)
 
-
-# =============================
-#  Tiny Autoencoder Definition
-# =============================
 class TinyEncoder(nn.Module):
     def __init__(self, latent_dim=64):
         super().__init__()
@@ -85,9 +77,6 @@ class Autoencoder(nn.Module):
         return out, z
 
 
-# =============================
-#  Training Script
-# =============================
 def train_autoencoder(
     sprite_folder="sprites",
     latent_dim=64,
@@ -99,16 +88,13 @@ def train_autoencoder(
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
 
-    # Dataset + loader
     dataset = SpriteDataset(sprite_folder)
     loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-    # Model, loss, optimizer
     model = Autoencoder(latent_dim).to(device)
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
-    # Training loop
     for epoch in range(1, epochs + 1):
         total_loss = 0.0
         for imgs in loader:
@@ -125,17 +111,12 @@ def train_autoencoder(
         avg_loss = total_loss / len(dataset)
         print(f"Epoch {epoch}/{epochs}  Loss: {avg_loss:.6f}")
 
-    # Save only encoder for embedding usage
     torch.save(model.enc.state_dict(), save_path)
     print(f"Encoder saved to {save_path}")
 
-
-# =============================
-#  Run Training
-# =============================
 if __name__ == "__main__":
     train_autoencoder(
-        sprite_folder="sprites",  # folder containing 56x56 sprites
+        sprite_folder="sprites",
         latent_dim=64,
         epochs=200,
         batch_size=32,

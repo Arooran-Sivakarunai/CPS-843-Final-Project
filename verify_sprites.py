@@ -5,9 +5,6 @@ from predict_pokemon import (
     predict,
 )
 
-# =============================
-#   Verification script
-# =============================
 def verify_shiny_predictions(
     shiny_folder="shinies",
     db_folder="sprites",
@@ -65,10 +62,6 @@ def verify_shiny_predictions(
                 f"  {true_label} → {pred_label} (distance={score:.4f})"
             )
 
-
-# =============================
-#   Main
-# =============================
 if __name__ == "__main__":
     verify_shiny_predictions(
         shiny_folder="sprites",

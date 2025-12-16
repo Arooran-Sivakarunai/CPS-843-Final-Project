@@ -45,11 +45,8 @@ def plot_closest_match_distances(
         labels.append(true_label)
         distances.append(score)
 
-    print(f"Average Distance: {sum(distances) / len(distances):2f}")
+    print(f"Average Distance: {sum(distances) / len(distances)}")
 
-    # =============================
-    #   Bar graph
-    # =============================
     plt.figure(figsize=(max(10, len(labels) * 0.4), 5))
     plt.bar(labels, distances)
     plt.xticks(rotation=90)
@@ -59,10 +56,6 @@ def plot_closest_match_distances(
     plt.tight_layout()
     plt.show()
 
-
-# =============================
-#   Main
-# =============================
 if __name__ == "__main__":
     plot_closest_match_distances(
         shiny_folder="sprites",
